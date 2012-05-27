@@ -1,0 +1,6 @@
+alias reload='source $HOME/.bashrc'
+alias ls='ls --color=auto'
+alias ll='ls -al'
+alias grep='grep --color=auto'
+alias more='less'
+which colordiff > /dev/null 2>&1 && alias diff='colordiff -u'

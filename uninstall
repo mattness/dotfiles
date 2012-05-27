@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Allow user to override destination dir (useful for testing),
+# but default to $HOME
+dest_dir=${DEST_DIR-$HOME}
+dotfiles_dir=$( cd -P "$(dirname "$0" )" && pwd )
+
+# Find linkables in this script's directory tree
+linkables=`find "$dotfiles_dir" -name \*.symlink`
+
+for link in $linkables; do
+  # Strip the .symlink part of the name
+  noext=${link%.*}
+
+  # Throw away everything before the last '/', and prefix with a '.'
+  targetname=.$(basename "$noext")
+
+  # Build the target path
+  dest=$dest_dir/$targetname
+
+  # If a symlink already exists at the target path, remove it
+  [[ -h "$dest" ]] && rm -f "$dest"
+
+  # If a backup exists for the target path, restore it
+  [[ -e "${dest}.backup" ]] && mv "${dest}.backup" "$dest"
+done

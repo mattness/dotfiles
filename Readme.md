@@ -22,6 +22,14 @@ though.
 The main file you'll want to change right off the bat is `bash/bashrc.symlink`,
 which sets up a few paths that'll be different on your particular machine.
 
+## uninstall
+- `cd ~/.dotfiles`
+- `./uninstall`
+
+The uninstall script will remove any symlinks the install script created,
+and restore any backups that the install script created.  Be sure to exit any
+open terminal windows and restart them to clear out your environment/aliases.
+
 ## topical
 
 Everything's built around topic areas. If you're adding a new area to your

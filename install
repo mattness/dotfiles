@@ -5,6 +5,53 @@
 dest_dir=${DEST_DIR-$HOME}
 dotfiles_dir=$( cd -P "$(dirname "$0" )" && pwd )
 
+resolve_link_dest() {
+  local src=$1
+  local dest=
+
+  # Search for a manifest file that will set the destination
+  local tmp=$(dirname "$src")
+  until [[ "$tmp" == "$dotfiles_dir" ]]
+  do
+    local manifest=$tmp/.manifest
+    if [[ -e "$manifest" ]]
+    then
+      # Search the manifest for this link's entry
+
+      # First, figure out the path of our link relative to the manifest
+      # by stripping $tmp/ from the $src path.  This is a little fragile,
+      # but should meet our needs right now.
+      local relpath=${src//"$tmp/"}
+
+      # Replace any '.' characters with a '\.' for grep
+      relpath=${relpath//"."/"\."}
+
+      # Next, grep for a manifest entry that starts with the relative path
+      # And grab the right-hand side of that entry
+      candidate=`cat "$manifest" | grep "^$relpath -> " | sed -n -e 's/^.* -> \(.*$\)/\1/p'`
+
+      [ -z "$candidate" ] || dest=$dest_dir/$candidate && break
+    fi
+    tmp=$(dirname "$tmp")
+  done
+
+  # If no manifest, or no destination for this link,
+  if [ -z "$dest" ]
+  then
+    # Strip the .symlink part of the name
+    noext=${src%.*}
+
+    # Throw away everything before the last '/', and prefix with a '.'
+    targetname=.$(basename "$noext")
+
+    # Build the target path
+    dest=$dest_dir/$targetname
+  fi
+
+  # "Return" the resulting destination
+  echo $dest
+}
+
 # Find linkables in this script's directory tree
 linkables=`find "$dotfiles_dir" -name \*.symlink`
 skip_all=false
@@ -12,14 +59,7 @@ overwrite_all=false
 backup_all=false
 
 for link in $linkables; do
-  # Strip the .symlink part of the name
-  noext=${link%.*}
-
-  # Throw away everything before the last '/', and prefix with a '.'
-  targetname=.$(basename "$noext")
-
-  # Build the target path
-  dest=$dest_dir/$targetname
+  dest=$(resolve_link_dest "$link")
 
   overwrite=false
   backup=false
@@ -65,7 +105,10 @@ for link in $linkables; do
     # If backup, rename the existing file/symlink with a .backup suffix
     ($backup || $backup_all) && mv "$dest" "${dest}.backup"
   fi
-  
+
+  # Create the directory where symlink will be placed if it doesn't exist
+  [[ -e $(dirname "$dest") ]] || mkdir -p "$(dirname "$dest")"
+
   # Link the file to the destination
   ln -s "$link" "$dest"
 done

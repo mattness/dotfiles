@@ -1,2 +1,3 @@
 User.symlink -> .config/sublime-text-2/Packages/User
 PackageControl.symlink -> .config/sublime-text-2/Packages/Package Control
+Dust.js.symlink -> .config/sublime-text-2/Packages/Dust.js

@@ -1,1 +1,4 @@
 git/gitconfig.symlink
+sublime/Packages/User.symlink/Package Control.last-run
+sublime/Packages/User.symlink/Package Control.sublime-settings
+*.pyc

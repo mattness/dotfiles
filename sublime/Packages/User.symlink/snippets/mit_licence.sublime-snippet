@@ -1,0 +1,30 @@
+<snippet>
+  <content><![CDATA[
+${1://} Copyright (c) ${2:Matt Gollob} and other $3 contributors.
+$1 All rights reserved.
+$1
+$1 Permission is hereby granted, free of charge, to any person obtaining a copy
+$1 of this software and associated documentation files (the "Software"), to
+$1 deal in the Software without restriction, including without limitation the
+$1 rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+$1 sell copies of the Software, and to permit persons to whom the Software is
+$1 furnished to do so, subject to the following conditions:
+$1
+$1 The above copyright notice and this permission notice shall be included in
+$1 all copies or substantial portions of the Software.
+$1
+$1 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+$1 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+$1 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+$1 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+$1 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+$1 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+$1 IN THE SOFTWARE.
+
+
+]]></content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <tabTrigger>mitlic</tabTrigger>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <!-- <scope>source.python</scope> -->
+</snippet>

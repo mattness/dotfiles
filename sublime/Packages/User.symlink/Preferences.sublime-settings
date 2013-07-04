@@ -1,13 +1,18 @@
-// Settings in here override those in "Default/Preferences.sublime-settings", and
-// are overridden in turn by file type specific settings.
 {
-  "auto_complete_commit_on_tab": true,
-  "color_scheme": "Packages/Color Scheme - Default/Monokai.tmTheme",
-  "detect_indentation": false,
-  "font_size": 10,
-  "highlight_line": true,
-  "rulers": [78],
-  "tab_size": 2,
-  "translate_tabs_to_spaces": true,
-  "trim_trailing_white_space_on_save": true
+	"auto_complete_commit_on_tab": true,
+	"color_scheme": "Packages/User/Monokai Soda.tmTheme",
+	"detect_indentation": false,
+	"font_size": 10,
+	"highlight_line": true,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"rulers":
+	[
+		78
+	],
+	"tab_size": 2,
+	"translate_tabs_to_spaces": true,
+	"trim_trailing_white_space_on_save": true
 }

@@ -21,3 +21,7 @@ mkcd() {
   mkdir -p "$*"
   cd "$*"
 }
+
+hist() {
+  history | grep -v hist | grep $*   
+}

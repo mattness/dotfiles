@@ -25,6 +25,8 @@ bindsym $mod+Shift+Q kill
 
 # start dmenu (a program launcher)
 bindsym Mod4+d exec dmenu_run
+bindsym Mod4+s exec systemctl suspend
+bindsym Mod4+l exec slock
 
 # change focus
 bindsym $mod+j focus left

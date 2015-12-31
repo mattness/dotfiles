@@ -1,0 +1,155 @@
+{! ds|dust-section !}
+{#section-name}
+{/section-name}
+
+{! db|dust-block !}
+{+block-name}
+{/block-name}
+
+{! dy|dust-exist !}
+{?name}{/name}
+
+{! dn|dust-not-exist !}
+{^name}{/name}
+
+{! dp|dust-partial !}
+{>"path/to/partial"/}
+
+{! dpi|dust-partial-inline !}
+{<inline-partial-name}
+{/inline-partial-name}
+
+{! dpp|dust-partial-params !}
+{>"path/to/partial" params/}
+
+{! dpd|dust-partial-dynamic !}
+{>"path/to/partial{dynamic-param}"/}
+
+{! deq|dust-equals !}
+{@eq value="bar"}{/eq}
+
+{! deqe|dust-equals-else !}
+{@eq key="10" value="price"}
+  Your price is 10
+{:else}
+  Your price is not 10
+{/eq}
+
+{! dne|dust-not-equals !}
+{@ne key="foo" value="foo"}{/ne}
+
+{! dlt|dust-less-than !}
+{@lt value=XX}{/lt}
+
+{! dlte|dust-less-than-equals !}
+{@lte value=XX}{/lte}
+
+{! dgt|dust-greater-than !}
+{@gt value=XX}{/gt}
+
+{! dgte|dust-greater-than-equals !}
+{@gte value=XX}{/gte}
+
+{! dm|dust-math !}
+{@math key="XX" method="XX" operand="XX" round="true|false"/}
+
+{! dma|dust-math-add !}
+{@math key="XX" method="add" operand="XX"/}
+
+{! dms|dust-math-subtract !}
+{@math key="XX" method="subtract" operand="XX"/}
+
+{! dmm|dust-math-multiply!}
+{@math key="XX" method="multiply" operand="XX"/}
+
+{! dmd|dust-math-divide !}
+{@math key="XX" method="divide" operand="XX"/}
+
+{! dmr|dust-math-round !}
+{@math key="XX.5" method="round"/}
+
+{! dmf|dust-math-floor !}
+{@math key="XX.5" method="floor"/}
+
+{! dmc|dust-math-ceil !}
+{@math key="XX.5" method="ceil"/}
+
+{! dmabs|dust-math-abs !}
+{@math key="XX.5" method="abs"/}
+
+{! dmeq|dust-math-eq-filter !}
+{@math key="-XX" method="abs"}
+  {@eq value=XX}
+
+  {/eq}
+{/math}
+
+{! dskt|dust-select-with-key-and-type !}
+{@select key="foo" type="string"}
+
+{/select}
+
+{! dsmcd|dust-select-multi-condition-with-default !}
+{@select key="foo"}
+  {@eq value="bar"}bar{/eq}
+  {@eq value="baz"}baz{/eq}
+  {@eq value="biz"}biz{/eq}
+  {@default value="default"}default{/default}
+{/select}
+
+{! dsia|dust-select-inside-array !}
+{#array}
+  {@select key=.}
+    {@eq value="foo"}foo{/eq}
+    {@eq value="bar"}bar{/eq}
+    {@default value="default"}default{/default}
+  {/select}
+{/array}
+
+{! dsize|dust-size !}
+{@size key=XX/}
+
+{! ddump|dust-context-dump !}
+{@contextDump key="current|full" to="output|console" /}
+
+{! dsep|dust-separator !}
+{@sep}, {/sep}
+
+{! dfs|dust-filter-suppress-auto-escape !}
+{name|s}
+
+{! dfh|dust-filter-force-html-escaping !}
+{name|h}
+
+{! dfj|dust-filter-force-javascript-escaping !}
+{name|j}
+
+{! dfu|dust-filter-native-encodeURI !}
+{name|u}
+
+{! dfuc|dust-filter-native-encodeURIComponent !}
+{name|uc}
+
+{! dfjs|dust-filter-stringify-json !}
+{name|js}
+
+{! dfjp|dust-filter-parse-json !}
+{name|jp}
+
+{! block comments supported !}
+{! {+block}
+  {@math key="-27" method="abs"}
+    {@eq value=27}
+      Test is true
+    {/eq}
+  {/math}
+{/block} !}
+
+{! single line comments supported !}
+{! {@math key="27.5" method="multiply" operand="7" round="true"/} !}
+{@math key="27.5" method="multiply" operand="7" round="true"/}
+{! {@math key="27.5" method="multiply" operand="7" round="true"/} !}
+{@math key="27.5" method="multiply" operand="7" round="true"/}
+
+{! language support for custom element types like html tags with dashes !}
+<div annotation-xml></div>

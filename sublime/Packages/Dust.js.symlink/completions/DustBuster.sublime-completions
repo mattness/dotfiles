@@ -1,0 +1,157 @@
+{
+    "scope": "text.html.dust",
+    "completions": [
+        {
+            "trigger": "ds|dust-section",
+            "contents": "{#${1:section-name}}\n\t${2}\n{/${1}}",
+        },
+        {
+            "trigger": "db|dust-block",
+            "contents": "{+${1:block-name}}\n\t${2}\n{/${1}}"
+        },
+        {
+            "trigger": "dy|dust-yes-exists",
+            "contents": "{?${1:name}}${2}{/${1}}"
+        },
+        {
+            "trigger": "dn|dust-no-exists",
+            "contents": "{^${1:name}}${2}{/${1}}"
+        },
+        {
+            "trigger": "dp|dust-partial",
+            "contents": "{>\"${1:path/to/partial}\"/}"
+        },
+        {
+            "trigger": "dpi|dust-partial-inline",
+            "contents": "{<${1:inline-partial-name}}\n\t${2}\n{/${1}}",
+        },
+        {
+            "trigger": "dpp|dust-partial-params",
+            "contents": "{>\"${1:path/to/partial}\" ${2: params }/}${0}"
+        },
+        {
+            "trigger": "dpd|dust-partial-dynamic",
+            "contents": "{>\"${1:path/to/partial}{${2:dynamic-param}}\"/}"
+        },
+        {
+            "trigger": "deq|dust-equals",
+            "contents": "{@eq value=\"${1:bar}\"}${2}{/eq}"
+        },
+        {
+            "trigger": "deqe|dust-equals-else",
+            "contents": "{@eq key=\"${1:10}\" value=\"${2:price}\"}\n\t${3:Your price is 10}\n{:else}\n\t${4:Your price is not 10}\n{/eq}"
+        },
+        {
+            "trigger": "dne|dust-not-equals",
+            "contents": "{@ne key=\"${1:foo}\" value=\"${2:foo}\"}${3}{/ne}"
+        },
+        {
+            "trigger": "dlt|dust-less-than",
+            "contents": "{@lt value=${1:XX}}${2}{/lt}"
+        },
+        {
+            "trigger": "dlte|dust-less-than-equals",
+            "contents": "{@lte value=${1:XX}}${2}{/lte}"
+        },
+        {
+            "trigger": "dgt|dust-greater-than",
+            "contents": "{@gt value=${1:XX}}${2}{/gt}"
+        },
+        {
+            "trigger": "dgte|dust-greater-than-equals",
+            "contents": "{@gte value=${1:XX}}${2}{/gte}"
+        },
+        {
+            "trigger": "dm|dust-math",
+            "contents": "{@math key=\"${1:XX}\" method=\"${2:XX}\" operand=\"${3:XX}\" round=\"${4:true|false}\"/}"
+        },
+        {
+            "trigger": "dma|dust-math-add",
+            "contents": "{@math key=\"${1:XX}\" method=\"add\" operand=\"${2:XX}\"/}"
+        },
+        {
+            "trigger": "dms|dust-math-subtract",
+            "contents": "{@math key=\"${1:XX}\" method=\"subtract\" operand=\"${2:XX}\"/}"
+        },
+        {
+            "trigger": "dmm|dust-math-multiply",
+            "contents": "{@math key=\"${1:XX}\" method=\"multiply\" operand=\"${2:XX}\"/}"
+        },
+        {
+            "trigger": "dmd|dust-math-divide",
+            "contents": "{@math key=\"${1:XX}\" method=\"divide\" operand=\"${2:XX}\"/}"
+        },
+        {
+            "trigger": "dmr|dust-math-round",
+            "contents": "{@math key=\"${1:XX.5}\" method=\"round\"/}"
+        },
+        {
+            "trigger": "dmf|dust-math-floor",
+            "contents": "{@math key=\"${1:XX.5}\" method=\"floor\"/}"
+        },
+        {
+            "trigger": "dmc|dust-math-ceil",
+            "contents": "{@math key=\"${1:XX.5}\" method=\"ceil\"/}"
+        },
+        {
+            "trigger": "dmabs|dust-math-abs",
+            "contents": "{@math key=\"${1:XX.5}\" method=\"abs\"/}"
+        },
+        {
+            "trigger": "dmeq|dust-math-eq-filter",
+            "contents": "{@math key=\"${1:-XX}\" method=\"${2:abs}\"}\n\t{@eq value=${3:XX}}\n\t\t${4}\n\t{/eq}\n{/math}"
+        },
+        {
+            "trigger": "dskt|dust-select-with-key-and-type",
+            "contents": "{@select key=\"${1:foo}\" type=\"${2:string}\"}\n\t${3}\n{/select}"
+        },
+        {
+            "trigger": "dsmcd|dust-select-multi-condition-with-default",
+            "contents": "{@select key=\"${1:foo}\"}\n\t{@eq value=\"${2:bar}\"}${3:bar}{/eq}\n\t{@eq value=\"${4:baz}\"}${5:baz}{/eq}\n\t{@eq value=\"${6:biz}\"}${7:biz}{/eq}\n\t{@default value=\"${8:default\"}}${9:default}{/default}\n{/select}"
+        },
+        {
+            "trigger": "dsia|dust-select-inside-array",
+            "contents": "{#array}\n\t{@select key=${1:.}}\n\t\t{@eq value=\"${2:foo}\"}${3:foo}{/eq}\n\t\t{@eq value=\"${4:bar}\"}${5:bar}{/eq}\n\t\t{@default value=\"${6:default}\"}${7:default}{/default}\n\t{/select}\n{/array}"
+        },
+        {
+            "trigger": "dsize|dust-size",
+            "contents": "{@size key=${1:XX}/}"
+        },
+        {
+            "trigger": "ddump|dust-context-dump",
+            "contents": "{@contextDump key=\"${1:current}|${2:full}\" to=\"${3:output}|${4:console}\"/}"
+        },
+        {
+            "trigger": "dsep|dust-separator",
+            "contents": "{@sep}, {/sep}"
+        },
+        {
+            "trigger": "dfs|dust-filter-suppress-auto-escape",
+            "contents": "{${1:name}|s}"
+        },
+        {
+            "trigger": "dfh|dust-filter-force-html-escaping",
+            "contents": "{${1:name}|h}"
+        },
+        {
+            "trigger": "dfj|dust-filter-force-javascript-escaping",
+            "contents": "{${1:name}|j}"
+        },
+        {
+            "trigger": "dfu|dust-filter-native-encodeURI",
+            "contents": "{${1:name}|u}"
+        },
+        {
+            "trigger": "dfuc|dust-filter-native-encodeURIComponent",
+            "contents": "{${1:name}|uc}"
+        },
+        {
+            "trigger": "dfjs|dust-filter-stringify-json",
+            "contents": "{${1:name}|js}"
+        },
+        {
+            "trigger": "dfjp|dust-filter-parse-json",
+            "contents": "{${1:name}|jp}"
+        },
+    ]
+}

@@ -2,7 +2,7 @@
 
 which sublime_text &>/dev/null
 if [[ $? -eq 0 ]]; then
-  sublime_text $* &>/dev/null &
+  sublime_text "$@" &>/dev/null &
 else
   echo error: sublime_text: command not found >&2
 fi

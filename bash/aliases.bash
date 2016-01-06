@@ -12,6 +12,7 @@ alias diff='diff -u'
 alias cdiff='colordiff -u'
 alias npatch='`which patch` --normal'
 alias patch='patch -u'
+alias xclip='xclip -selection c'
 
 pidlist() {
   ps -eo pid,cmd | grep "$1" | grep -v grep | awk '{ print $1 }' | tr '\n' ',' | sed 's/.$//'

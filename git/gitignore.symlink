@@ -1,0 +1,6 @@
+.DS_Store
+.svn
+*~
+*.swp
+tags
+npm-debug.log

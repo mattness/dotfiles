@@ -1,0 +1,2 @@
+vimrc.symlink -> .vimrc
+pathogen.symlink -> .vim/autoload/pathogen.vim

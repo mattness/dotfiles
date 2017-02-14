@@ -1,0 +1,19 @@
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+
+[alias]
+  st = status -s
+  unstage = reset HEAD --
+  co = checkout
+  ci = commit
+  br = branch
+  last = log -1 HEAD
+  graph = log --pretty=format:\"%Cred%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr)%Creset\" --abbrev-commit --graph
+
+[core]
+  excludesfile = ~/.gitignore
+  askpass = 
+[push]
+	default = matching

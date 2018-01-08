@@ -15,5 +15,9 @@
 [core]
   excludesfile = ~/.gitignore
   askpass = 
+
+[fetch]
+  prune = true
+
 [push]
-	default = matching
+  default = matching

@@ -5,5 +5,5 @@ ctags=${CTAGS_PATH:-$(which ctags)}
 dir="$(git rev-parse --show-toplevel)"
 trap 'rm -f "${dir}/$$.tags"' EXIT
 git ls-files | \
-  ${ctags} --tag-relative -L - -f"${dir}/$$.tags" --languages=-sql
+  ${ctags} -L - -f"${dir}/$$.tags"
 mv "${dir}/$$.tags" "${dir}/tags"

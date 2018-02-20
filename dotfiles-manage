@@ -6,7 +6,7 @@ dest_dir=${DEST_DIR-$HOME}
 dotfiles_dir=$( cd -P "$(dirname "$0" )" && pwd )
 
 # Find linkables in this script's directory tree
-linkables=`find "$dotfiles_dir" -name \*.symlink`
+linkables=`find "$dotfiles_dir" -path "$dotfiles_dir/.git" -prune -o -name \*.symlink -print`
 
 resolve_link_dest() {
   local src=$1

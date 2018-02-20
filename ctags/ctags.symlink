@@ -1,0 +1,4 @@
+--tag-relative
+--exclude=node_modules
+--exclude=.git
+--languages=-sql

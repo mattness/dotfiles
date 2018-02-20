@@ -1,3 +1,4 @@
 vimrc.symlink -> .vimrc
 pathogen.symlink -> .vim/autoload/pathogen.vim
 fugitive.symlink -> .vim/bundle/vim-fugitive
+scala.symlink -> .vim/bundle/vim-scala

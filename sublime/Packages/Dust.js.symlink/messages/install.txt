@@ -1,9 +1,0 @@
-You have successfully installed
-   ___           __  ___           __         
-  / _ \__ _____ / /_/ _ )__ _____ / /____ ____
- / // / // (_-</ __/ _  / // (_-</ __/ -_) __/
-/____/\_,_/___/\__/____/\_,_/___/\__/\__/_/   
-
-by Mike Delucchi - [@zanuka](https://github.com/zanuka)
-
-Enjoy!

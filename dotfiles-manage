@@ -24,7 +24,7 @@ resolve_link_dest() {
       # First, figure out the path of our link relative to the manifest
       # by stripping $tmp/ from the $src path.  This is a little fragile,
       # but should meet our needs right now.
-      local relpath=${src//"$tmp/"}
+      local relpath=${src#$tmp/}
 
       # Replace any '.' characters with a '\.' for grep
       relpath=${relpath//"."/"\."}

@@ -1,0 +1,16 @@
+# Sample gitconfig
+#
+# This is a sample gitconfig.local. Here, we can keep a lot of sensitive
+# information (things like authentication tokens, email addresses, and so on),
+# so this file is ignored in this project's .gitignore.
+#
+# To set this up, rename this file to `gitconfig.local.symlink` and you'll be
+# able to install this to the correct location by running the project's main
+# install script.
+
+[user]
+  name = AUTHORNAME
+  email = AUTHOREMAIL
+
+[credential]
+  helper = GIT_CREDENTIAL_HELPER

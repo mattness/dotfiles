@@ -4,3 +4,9 @@
 [submodule "vim/scala.symlink"]
 	path = vim/scala.symlink
 	url = https://github.com/derekwyatt/vim-scala.git
+[submodule "vim/node.symlink"]
+	path = vim/node.symlink
+	url = https://github.com/moll/vim-node
+[submodule "vim/javascript-syntax.symlink"]
+	path = vim/javascript-syntax.symlink
+	url = https://github.com/jelera/vim-javascript-syntax

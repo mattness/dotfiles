@@ -10,3 +10,6 @@
 [submodule "vim/javascript-syntax.symlink"]
 	path = vim/javascript-syntax.symlink
 	url = https://github.com/jelera/vim-javascript-syntax
+[submodule "vim/terraform.symlink"]
+	path = vim/terraform.symlink
+	url = https://github.com/hashivim/vim-terraform.git

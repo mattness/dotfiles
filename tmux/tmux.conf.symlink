@@ -1,6 +1,42 @@
 set-option -g default-terminal "screen-256color"
 set -g default-command /bin/bash
 set -g default-shell /bin/bash
+set -g mouse off
+
+# Reset prefix to Ctrl+a
+set -g prefix C-a
+bind C-a send-prefix
+unbind C-b
+
+# Shorten the delay between prefix and command
+set -s escape-time 1
+
+# VIM-like pane movement keys
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+bind H resize-pane -L 5
+bind J resize-pane -D 5
+bind K resize-pane -U 5
+bind L resize-pane -R 5
+
+# I can't remember % and "
+bind | split-window -h
+bind - split-window -v
+
+# Quick Window selection
+bind -r C-h select-window -t :-
+bind -r C-l select-window -t :+
+
+# Make the pane border easier to read
+setw -g pane-border-style fg=green,bg=black
+setw -g pane-active-border-style fg=black,bg=green
+
+# Enable activity notifications
+setw -g monitor-activity on
+set -g visual-activity on
 
 ####################################################################
 # Display customizations                                           #

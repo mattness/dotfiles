@@ -71,4 +71,4 @@ function! RelativeNumberToggle()
   endif
 endfunction
 
-nnoremap <C-n> :call RelativeNumberToggle ()<CR>
+nnoremap <leader>rn :call RelativeNumberToggle ()<CR>

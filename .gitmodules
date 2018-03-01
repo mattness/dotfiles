@@ -13,3 +13,6 @@
 [submodule "vim/terraform.symlink"]
 	path = vim/terraform.symlink
 	url = https://github.com/hashivim/vim-terraform.git
+[submodule "vim/commentary.symlink"]
+	path = vim/commentary.symlink
+	url = https://github.com/tpope/vim-commentary

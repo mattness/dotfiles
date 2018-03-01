@@ -16,3 +16,6 @@
 [submodule "vim/commentary.symlink"]
 	path = vim/commentary.symlink
 	url = https://github.com/tpope/vim-commentary
+[submodule "vim/editorconfig.symlink"]
+	path = vim/editorconfig.symlink
+	url = https://github.com/editorconfig/editorconfig-vim.git

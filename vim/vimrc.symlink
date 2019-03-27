@@ -78,3 +78,7 @@ nnoremap <leader>b :buffers<CR>
 nnoremap <leader>rl gd[{V%::s/<C-R>///gc<left><left><left>
 " Rename variable globally (within buffer)
 nnoremap <leader>rg gD:%s/<C-R>///gc<left><left><left>
+
+if filereadable($HOME."/.localvimrc")
+  source ~/.localvimrc
+endif

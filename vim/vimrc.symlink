@@ -35,6 +35,7 @@ set nostartofline          " don't jump to the start of line when scrolling
 " Visual Cues
 " ----------------------------------------------------------------------------
  
+set t_vb=                  " no visual bell
 set showmatch              " brackets/braces that is
 set mat=5                  " duration to show matching brace (1/10 sec)
 set incsearch              " do incremental searching

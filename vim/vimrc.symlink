@@ -73,3 +73,8 @@ function! RelativeNumberToggle()
 endfunction
 
 nnoremap <leader>rn :call RelativeNumberToggle ()<CR>
+nnoremap <leader>b :buffers<CR>
+" Rename variable locally
+nnoremap <leader>rl gd[{V%::s/<C-R>///gc<left><left><left>
+" Rename variable globally (within buffer)
+nnoremap <leader>rg gD:%s/<C-R>///gc<left><left><left>

@@ -37,6 +37,8 @@ set nostartofline          " don't jump to the start of line when scrolling
  
 set t_vb=                  " no visual bell
 set showmatch              " brackets/braces that is
+set list                   " make special chars visible
+set listchars=tab:\ \      " show tabs sorta, SpecialKey hl makes them visible
 set mat=5                  " duration to show matching brace (1/10 sec)
 set incsearch              " do incremental searching
 set laststatus=2           " always show the status line
@@ -49,6 +51,8 @@ highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 
 execute pathogen#infect()
+
+highlight SpecialKey ctermbg=234
 
 " ---------------------------------------------------------------------------
 "  Strip all trailing whitespace in file

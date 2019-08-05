@@ -7,3 +7,4 @@ javascript-syntax.symlink -> .vim/bundle/vim-javascript-syntax
 terrafom.symlink -> .vim/bundle/vim-terrafom
 commentary.symlink -> .vim/bundle/vim-commentary
 editorconfig.symlink -> .vim/bundle/editorconfig-vim
+puppet-syntax-vim.symlink -> .vim/bundle/vim-puppet

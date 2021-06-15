@@ -28,3 +28,6 @@
 [submodule "vim/sharpenup.symlink"]
 	path = vim/sharpenup.symlink
 	url = https://github.com/nickspoons/vim-sharpenup
+[submodule "vim/lightline.symlink"]
+	path = vim/lightline.symlink
+	url = https://github.com/itchyny/lightline.vim

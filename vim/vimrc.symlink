@@ -55,6 +55,17 @@ execute pathogen#infect()
 highlight SpecialKey ctermbg=234
 
 " ---------------------------------------------------------------------------
+"  Lightline
+" ---------------------------------------------------------------------------
+set noshowmode
+let g:lightline = {
+  \ 'colorscheme': 'wombat',
+  \ }
+if !has('gui_running')
+  set t_Co=256
+endif
+
+" ---------------------------------------------------------------------------
 " OmniSharp
 " ---------------------------------------------------------------------------
 " Don't autoselect first omnicomplete option, show options even if there is only

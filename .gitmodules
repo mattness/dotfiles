@@ -19,3 +19,12 @@
 [submodule "vim/puppet-syntax-vim.symlink"]
 	path = vim/puppet-syntax-vim.symlink
 	url = https://github.com/puppetlabs/puppet-syntax-vim.git
+[submodule "vim/omnisharp.symlink"]
+	path = vim/omnisharp.symlink
+	url = https://github.com/OmniSharp/omnisharp-vim
+[submodule "vim/ale.symlink"]
+	path = vim/ale.symlink
+	url = https://github.com/dense-analysis/ale
+[submodule "vim/sharpenup.symlink"]
+	path = vim/sharpenup.symlink
+	url = https://github.com/nickspoons/vim-sharpenup

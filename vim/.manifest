@@ -12,3 +12,4 @@ omnisharp.symlink -> .vim/bundle/omnisharp-vim
 ale.symlink -> .vim/bundle/ale
 sharpenup.symlink -> .vim/bundle/vim-sharpenup
 lightline.symlink -> .vim/bundle/lightline.vim
+ansible.symlink -> .vim/bundle/ansible-vim

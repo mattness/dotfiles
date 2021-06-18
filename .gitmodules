@@ -31,3 +31,6 @@
 [submodule "vim/lightline.symlink"]
 	path = vim/lightline.symlink
 	url = https://github.com/itchyny/lightline.vim
+[submodule "vim/ansible.symlink"]
+	path = vim/ansible.symlink
+	url = https://github.com/pearofducks/ansible-vim

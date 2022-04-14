@@ -32,13 +32,15 @@ bind - split-window -v
 bind -r C-h select-window -t :-
 bind -r C-l select-window -t :+
 
+if-shell "[ -f ~/.tmuxtheme ]" "source ~/.tmuxtheme"
+
 # Make the pane border easier to read
 setw -g pane-border-style fg=green,bg=black
 setw -g pane-active-border-style fg=black,bg=green
 
 # Enable activity notifications
-setw -g monitor-activity on
-set -g visual-activity on
+setw -g monitor-activity off
+set -g visual-activity off
 
 ####################################################################
 # Display customizations                                           #

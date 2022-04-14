@@ -1,9 +1,6 @@
 [submodule "vim/fugitive.symlink"]
 	path = vim/fugitive.symlink
 	url = https://github.com/tpope/vim-fugitive.git
-[submodule "vim/scala.symlink"]
-	path = vim/scala.symlink
-	url = https://github.com/derekwyatt/vim-scala.git
 [submodule "vim/node.symlink"]
 	path = vim/node.symlink
 	url = https://github.com/moll/vim-node

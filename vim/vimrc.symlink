@@ -1,5 +1,7 @@
 set noswapfile
 
+filetype plugin on
+
 " ----------------------------------------------------------------------------
 "  Text Formatting
 " ----------------------------------------------------------------------------
@@ -87,6 +89,8 @@ endif
 
 let g:OmniSharp_highlighting = 0
 let g:OmniSharp_popup_position = 'peek'
+let g:OmniSharp_server_use_net6 = 1
+let g:sharpenup_map_prefix = "<Space>"
 
 " Tell ALE to use OmniSharp for linting C# files, and no other linters.
 let g:ale_linters = { 'cs': ['OmniSharp'] }
@@ -157,10 +161,6 @@ endfunction
 
 nnoremap <leader>rn :call RelativeNumberToggle ()<CR>
 nnoremap <leader>b :buffers<CR>
-" Rename variable locally
-nnoremap <leader>rl gd[{V%::s/<C-R>///gc<left><left><left>
-" Rename variable globally (within buffer)
-nnoremap <leader>rg gD:%s/<C-R>///gc<left><left><left>
 
 if filereadable($HOME."/.localvimrc")
   source ~/.localvimrc

@@ -2,10 +2,11 @@ set-option -g default-terminal "screen-256color"
 set -g default-command /bin/bash
 set -g default-shell /bin/bash
 set -g mouse off
+set -g history-limit 10000
 
-# Reset prefix to Ctrl+a
-set -g prefix C-a
-bind C-a send-prefix
+# Reset prefix to Ctrl+Space
+set -g prefix C-Space
+bind C-Space send-prefix
 unbind C-b
 
 # Shorten the delay between prefix and command
@@ -35,12 +36,9 @@ bind -r C-l select-window -t :+
 if-shell "[ -f ~/.tmuxtheme ]" "source ~/.tmuxtheme"
 
 # Make the pane border easier to read
-setw -g pane-border-style fg=green,bg=black
-setw -g pane-active-border-style fg=black,bg=green
-
-# Enable activity notifications
-setw -g monitor-activity off
-set -g visual-activity off
+blizzardblue='#00B4FF' # rgb(0,180,255)
+setw -g pane-border-style fg=$blizzardblue,bg=black
+setw -g pane-active-border-style fg=black,bg=$blizzardblue
 
 ####################################################################
 # Display customizations                                           #
@@ -49,26 +47,16 @@ set -g visual-activity off
 # Status bar {
 
 set -g status-position bottom
-set -g status-bg colour234
-set -g status-fg colour137
-set -g status-attr dim
+set -g status-style bg=colour234,fg=colour137,dim
 set -g status-left ''
 set -g status-right '#[fg=colour233,bg=colour245,bold] %H:%M:%S '
 set -g status-right-length 50
 set -g status-left-length 20
 
-setw -g window-status-current-fg colour81
-setw -g window-status-current-bg colour238
-setw -g window-status-current-attr bold
-setw -g window-status-current-format ' #I#[fg=colour250]:#[fg=colour255]#W#[fg=colour50]#F '
+setw -g window-status-current-style fg=colour238,bg=$blizzardblue,bold
+setw -g window-status-current-format ' #I:#W#F '
 
-setw -g window-status-fg colour138
-setw -g window-status-bg colour235
-setw -g window-status-attr none
-setw -g window-status-format ' #I#[fg=colour237]:#[fg=colour250]#W#[fg=colour244]#F '
-
-setw -g window-status-bell-attr bold
-setw -g window-status-bell-fg colour255
-setw -g window-status-bell-bg colour1
+setw -g window-status-style fg=$blizzardblue,bg=colour235,none
+setw -g window-status-format ' #I:#W#F '
 
 # }

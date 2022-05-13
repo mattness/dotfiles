@@ -34,3 +34,6 @@
 [submodule "vim/ansible.symlink"]
 	path = vim/ansible.symlink
 	url = https://github.com/pearofducks/ansible-vim
+[submodule "vim/vimspector.symlink"]
+	path = vim/vimspector.symlink
+	url = https://github.com/puremourning/vimspector.git

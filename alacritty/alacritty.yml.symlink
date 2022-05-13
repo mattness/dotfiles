@@ -193,13 +193,16 @@ window:
 
 # If `true`, bold text is drawn using the bright color variants.
 #draw_bold_text_with_bright_colors: false
+draw_bold_text_with_bright_colors: true
 
 # Colors (Tomorrow Night)
-#colors:
+colors:
   # Default colors
-  #primary:
+  primary:
   #  background: '#1d1f21'
   #  foreground: '#c5c8c6'
+    background: '#1a1d21'
+    foreground: '#c4cad1'
 
     # Bright and dim foreground colors
     #
@@ -296,6 +299,16 @@ window:
   #  cyan:    '#8abeb7'
   #  white:   '#c5c8c6'
 
+  normal:
+    black:   '#000000'
+    red:     '#aa0000'
+    green:   '#00aa00'
+    yellow:  '#aa5500'
+    blue:    '#0000aa'
+    magenta: '#aa00aa'
+    cyan:    '#00aaaa'
+    white:   '#aaaaaa'
+
   # Bright colors
   #bright:
   #  black:   '#666666'
@@ -306,6 +319,15 @@ window:
   #  magenta: '#c397d8'
   #  cyan:    '#70c0b1'
   #  white:   '#eaeaea'
+  bright:
+    black:   '#555555'
+    red:     '#ff5555'
+    green:   '#55ff55'
+    yellow:  '#ffff55'
+    blue:    '#5555ff'
+    magenta: '#ff55ff'
+    cyan:    '#55ffff'
+    white:   '#ffffff'
 
   # Dim colors
   #

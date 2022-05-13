@@ -1,4 +1,5 @@
 set-option -g default-terminal "screen-256color"
+set -gq status-utf8 on
 set -g default-command /bin/bash
 set -g default-shell /bin/bash
 set -g mouse off

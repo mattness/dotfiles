@@ -2,6 +2,7 @@ set-option -g default-terminal "screen-256color"
 set -gq status-utf8 on
 set -g default-command /bin/bash
 set -g default-shell /bin/bash
+set -g base-index 1
 set -g mouse off
 set -g history-limit 10000
 
@@ -25,6 +26,7 @@ bind K resize-pane -U 5
 bind L resize-pane -R 5
 
 set-window-option -g mode-keys vi
+set-window-option -g pane-base-index 1
 
 # I can't remember % and "
 bind | split-window -h

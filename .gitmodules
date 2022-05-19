@@ -37,3 +37,9 @@
 [submodule "vim/vimspector.symlink"]
 	path = vim/vimspector.symlink
 	url = https://github.com/puremourning/vimspector.git
+[submodule "vim/fzf.symlink"]
+	path = vim/fzf.symlink
+	url = https://github.com/junegunn/fzf.git
+[submodule "vim/fzf.vim.symlink"]
+	path = vim/fzf.vim.symlink
+	url = https://github.com/junegunn/fzf.vim.git

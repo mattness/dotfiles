@@ -16,3 +16,4 @@ ansible.symlink -> .vim/bundle/ansible-vim
 vimspector.symlink -> .vim/bundle/vimspector
 fzf.symlink -> .vim/bundle/fzf
 fzf.vim.symlink -> .vim/bundle/fzf.vim
+listtoggle.symlink -> .vim/bundle/listtoggle

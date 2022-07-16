@@ -43,3 +43,6 @@
 [submodule "vim/fzf.vim.symlink"]
 	path = vim/fzf.vim.symlink
 	url = https://github.com/junegunn/fzf.vim.git
+[submodule "vim/listtoggle.symlink"]
+	path = vim/listtoggle.symlink
+	url = https://github.com/Valloric/ListToggle

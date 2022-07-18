@@ -46,3 +46,6 @@
 [submodule "vim/listtoggle.symlink"]
 	path = vim/listtoggle.symlink
 	url = https://github.com/Valloric/ListToggle
+[submodule "vim/apprentice.symlink"]
+	path = vim/apprentice.symlink
+	url = https://github.com/romainl/apprentice.git

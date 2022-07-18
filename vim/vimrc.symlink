@@ -55,6 +55,7 @@ match OverLength /\%121v.\+/
 execute pathogen#infect()
 
 highlight SpecialKey ctermbg=234
+colorscheme apprentice
 
 " ---------------------------------------------------------------------------
 "  Lightline

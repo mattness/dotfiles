@@ -32,6 +32,7 @@ set backspace=2            " allow backspacing over everything in insert mode
 set whichwrap+=<,>,h,l,[,] " backspace and cursor keys wrap to
 set report=0               " tell us about changes
 set nostartofline          " don't jump to the start of line when scrolling
+set hidden                 " allow buffer switching without saving first
  
 " ----------------------------------------------------------------------------
 " Visual Cues

@@ -15,6 +15,7 @@
   last = log -1 HEAD
   graph = log --pretty=format:\"%Cred%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr)%Creset\" --abbrev-commit --graph
   conflicts = diff --name-only --diff-filter=U
+  fplog = log --oneline --first-parent
 
 [core]
   excludesfile = ~/.gitignore

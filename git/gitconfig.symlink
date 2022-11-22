@@ -26,3 +26,6 @@
 
 [push]
   default = matching
+
+[advice]
+  detachedHead = false

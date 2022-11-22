@@ -3,3 +3,5 @@ node_modules/
 tags
 .idea/
 .vimspector.json
+.vimrc.unity
+.vimrc.dotnet31

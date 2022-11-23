@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+tmux_bin=/opt/homebrew/bin/tmux
+
+CURRENT_PANE="$(${tmux_bin} display-message -p -F "#{session_name}")"
+if echo "$CURRENT_PANE" | grep -q '^popup.*'; then
+    ${tmux_bin} detach-client
+else
+    if [ "$1" = "single" ]; then
+        ${tmux_bin} popup -d '#{pane_current_path}' -xC -y0% -w50% -h50% -E "${tmux_bin} attach -t 'popup-$CURRENT_PANE' || ${tmux_bin} new -s 'popup-$CURRENT_PANE'" || true
+    else
+        ${tmux_bin} popup -x100% -y0% -w50% -h50% -E "${tmux_bin} attach -t popup-master || ${tmux_bin} new -s popup-master" || true
+    fi
+fi

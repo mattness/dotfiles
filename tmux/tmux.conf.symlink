@@ -15,6 +15,9 @@ unbind C-b
 # Shorten the delay between prefix and command
 set -s escape-time 1
 
+# Scratchpad
+bind BSpace run-shell 'popup-tmux single'
+
 # VIM-like pane movement keys
 bind h select-pane -L
 bind j select-pane -D

@@ -5,3 +5,4 @@ tags
 .vimspector.json
 .vimrc.unity
 .vimrc.dotnet31
+.DS_Store

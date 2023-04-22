@@ -40,8 +40,6 @@ bind - split-window -v
 bind -r C-h select-window -t :-
 bind -r C-l select-window -t :+
 
-if-shell "[ -f ~/.tmuxtheme ]" "source ~/.tmuxtheme"
-
 # Make the pane border easier to read
 blizzardblue='#00B4FF' # rgb(0,180,255)
 setw -g pane-border-style fg=$blizzardblue,bg=black

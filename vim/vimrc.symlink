@@ -174,20 +174,7 @@ function! StripWhitespace ()
 endfunction
 map ,s :call StripWhitespace ()<CR>
 
-
-" ---------------------------------------------------------------------------
-"  Toggle relative line numbers
-" ---------------------------------------------------------------------------
-
-function! RelativeNumberToggle()
-  if(&relativenumber == 1)
-    set norelativenumber
-  else
-    set relativenumber
-  endif
-endfunction
-
-nnoremap <leader>rn :call RelativeNumberToggle ()<CR>
+nnoremap <leader>rn :set relativenumber!<CR>
 nnoremap <leader>b :buffers<CR>
 
 if filereadable($HOME."/.localvimrc")

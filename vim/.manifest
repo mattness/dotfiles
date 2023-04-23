@@ -18,3 +18,4 @@ fzf.symlink -> .vim/bundle/fzf
 fzf.vim.symlink -> .vim/bundle/fzf.vim
 listtoggle.symlink -> .vim/bundle/listtoggle
 apprentice.symlink -> .vim/bundle/apprentice
+ftplugin-after.symlink -> .vim/after/ftplugin

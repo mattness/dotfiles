@@ -13,9 +13,10 @@
   ci = commit
   br = branch
   last = log -1 HEAD
-  graph = log --pretty=format:\"%Cred%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr)%Creset\" --abbrev-commit --graph
+  graph = log --graph --oneline
   conflicts = diff --name-only --diff-filter=U
   fplog = log --oneline --first-parent
+  empty = commit --allow-empty -m 'Empty commit'
 
 [core]
   excludesfile = ~/.gitignore
@@ -23,12 +24,20 @@
 
 [fetch]
   prune = true
+  writeCommitGraph = true
 
 [push]
   default = matching
+  followTags = true
 
 [advice]
   detachedHead = false
+  skippedCherryPicks = false
+  forceDeleteBranch = false
+  diverging = false
 
 [pull]
   rebase = true
+
+[merge]
+  ff = only

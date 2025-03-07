@@ -1,8 +1,8 @@
 set-option -g default-terminal "tmux-256color"
 set-option -g terminal-overrides ",*256color*:RGB,alacritty*:RGB"
 set -gq status-utf8 on
-set -g default-command /bin/bash
-set -g default-shell /bin/bash
+set -g default-command /opt/homebrew/bin/bash
+set -g default-shell /opt/homebrew/bin/bash
 set -g base-index 1
 set -g mouse off
 set -g history-limit 10000
@@ -39,6 +39,22 @@ bind - split-window -v
 # Quick Window selection
 bind -r C-h select-window -t :-
 bind -r C-l select-window -t :+
+
+mg_status_right='#[fg=colour233,bg=colour245,bold] UTC: #(date -u "+%%H:%%M:%%S") | %Y-%m-%d %H:%M:%S '
+mg_status_right_off="#[fg=grey,bg=red]OFF$mg_status_right"
+# Activate OFF mode
+bind -n F4 \
+    set prefix None \;\
+    set key-table off \;\
+    set status-style "fg=colour245,bg=colour238" \;\
+    set status-right $mg_status_right_off
+
+# Disable OFF mode
+bind -T off F4 \
+    set -u prefix \;\
+    set -u key-table \;\
+    set -u status-style \;\
+    set status-right $mg_status_right
 
 # Make the pane border easier to read
 blizzardblue='#00B4FF' # rgb(0,180,255)

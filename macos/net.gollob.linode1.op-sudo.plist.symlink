@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Disabled</key>
+    <false/>
+    <key>Label</key>
+    <string>net.gollob.linode1.op-sudo.ptyjyoddfzwwh5g7xatyrxr2km</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/op</string>
+        <string>read</string>
+        <string>op://Private/ptyjyoddfzwwh5g7xatyrxr2km/password</string>
+    </array>
+    <key>inetdCompatibility</key>
+    <dict>
+        <key>Wait</key>
+        <false/>
+    </dict>
+    <key>InitGroups</key>
+    <true/>
+    <key>Sockets</key>
+    <dict>
+        <key>Listeners</key>
+        <dict>
+            <key>SockPathMode</key>
+            <integer>384</integer>
+            <key>SockPathName</key>
+            <string>/Users/matt/.op-sudo/linode1.sock</string>
+            <key>SockType</key>
+            <string>stream</string>
+        </dict>
+    </dict>
+</dict>
+</plist>

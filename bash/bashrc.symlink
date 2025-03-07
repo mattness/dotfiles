@@ -14,24 +14,29 @@ physical_dir() {
   echo $dir
 }
 
-export DOTFILES=$(cd -P "$(physical_dir "${BASH_SOURCE[0]}")/../" && pwd)
-export PROJECTS=~/projects
+dotfilesdir=$(cd -P "$(physical_dir "${BASH_SOURCE[0]}")/../" && pwd)
+mapfile -t configfiles     < <(find "${dotfilesdir}" -type f -name "*.bash" -not -name 'completion.bash' -and -not -name 'path.bash')
+mapfile -t pathfiles       < <(find "${dotfilesdir}" -type f -name 'path.bash')
+mapfile -t completionfiles < <(find "${dotfilesdir}" -type f -name 'completion.bash')
 
-for config_file in $DOTFILES/**/*.bash
-do
-  source $config_file
+for f in "${pathfiles[@]}"; do
+  source "${f}"
 done
-unset config_file
 
-# use .localrc for SUPER SECRET CRAP that you don't
-# want in your public, versioned repo.
-if [[ -a ~/.localrc ]]
-then
+for f in "${configfiles[@]}"; do
+  source "${f}"
+done
+
+# use .localrc for machine-specific stuff
+# that doesn't belong in the public repo.
+if [[ -a ~/.localrc ]]; then
   source ~/.localrc
 fi
 
-for config_file in $DOTFILES/**/completion.sh
-do
-  source $config_file
+for f in "${completionfiles[@]}"; do
+  source "${f}"
 done
-unset config_file
+
+unset configfiles pathfiles completionfiles f
+
+# vim: ft=bash

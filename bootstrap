@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -e
+script_dir="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P)"
+
+# Set macOS defaults
+"${script_dir}/macos/set-defaults.sh"
+
+# Install homebrew
+"${script_dir}/homebrew/install.sh" 2>&1
+
+# Install software
+"${script_dir}/install" <<<'B'

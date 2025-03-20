@@ -43,6 +43,9 @@
 [merge]
   ff = only
 
+[mergetool "vimdiff"]
+  layout = "LOCAL,BASE,REMOTE / MERGED + BASE,LOCAL + BASE,REMOTE + (LOCAL/BASE/REMOTE),MERGED"
+
 [gpg]
   format = ssh
 

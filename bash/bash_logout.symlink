@@ -1,0 +1,6 @@
+SOCKET="$(realpath ~/.ssh/op-sudo.sock)"
+if [ ! -z "${SSH_TTY}" -a -S "${SOCKET}" -a -r "${SOCKET}" ]; then
+  rm -f "${SOCKET}"
+fi
+
+# vim: ft=bash

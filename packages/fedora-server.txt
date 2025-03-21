@@ -1,0 +1,8 @@
+fd-find
+fzf
+git
+git-lfs
+jq
+ripgrep
+tmux
+vim-enhanced

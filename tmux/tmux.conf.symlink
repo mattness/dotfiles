@@ -1,0 +1,63 @@
+# set-option -g default-terminal "tmux-256color"
+# set-option -g terminal-overrides ",*256color*:RGB,alacritty*:RGB"
+set -gq status-utf8 on
+set -g base-index 1
+set -g mouse off
+set -g history-limit 10000
+
+# Reset prefix to Ctrl+Space
+set -g prefix C-Space
+bind C-Space send-prefix
+unbind C-b
+
+# Shorten the delay between prefix and command
+set -s escape-time 1
+
+# VIM-like pane movement keys
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+set-window-option -g mode-keys vi
+set-window-option -g pane-base-index 1
+
+# I can't remember % and "
+bind | split-window -h
+bind - split-window -v
+
+# Quick Window selection
+bind -r C-h select-window -t :-
+bind -r C-l select-window -t :+
+
+# Make the pane border easier to read
+blizzardblue='#00B4FF' # rgb(0,180,255)
+setw -g pane-border-style fg=$blizzardblue,bg=black
+setw -g pane-active-border-style fg=black,bg=$blizzardblue
+
+####################################################################
+# Display customizations                                           #
+####################################################################
+
+# Status bar {
+
+set -g status-position bottom
+set -g status-style bg=colour234,fg=colour137,dim
+set -g status-left ''
+set -g status-right '#[fg=colour233,bg=colour245,bold] UTC: #(date -u "+%%H:%%M:%%S") | %Y-%m-%d %H:%M:%S '
+set -g status-right-length 50
+set -g status-left-length 20
+set -g status-interval 15
+
+setw -g window-status-current-style fg=colour238,bg=$blizzardblue,bold
+setw -g window-status-current-format ' #I:#W#F '
+
+setw -g window-status-style fg=$blizzardblue,bg=colour235,none
+setw -g window-status-format ' #I:#W#F '
+
+# }

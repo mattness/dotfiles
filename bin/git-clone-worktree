@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -e
+
+url="${1}"
+reponame=$(basename -- "${url}")
+repodir="${reponame%.*}/.repo.git"
+
+git -c init.defaultBranch=worktree-bare init --bare "${repodir}"
+git -C "${repodir}" config remote.origin.url "${url}"
+git -C "${repodir}" config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+git -C "${repodir}" fetch
+
+# NOTE: init.defaultBranch should make these unnecessary, but if for some reason HEAD *must* to point to a
+#       real commit object these can be used instead.
+# git -C "${repodir}" branch worktree-bare "$(git commit-tree $(git hash-object -t tree /dev/null) < /dev/null)"
+# git -C "${repodir}" symbolic-ref HEAD refs/heads/worktree-bare

@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+SOCKET="$(realpath ~/.ssh/op-sudo.sock)"
+has-command() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+use-socket() {
+  if has-command nc; then
+    nc -U "${SOCKET}" < /dev/null
+  elif has-command socat; then
+    socat stdio "UNIX-CONNECT:${SOCKET}"
+  elif has-command python; then
+    python - "${SOCKET}" <<-'EOH'
+	import socket
+	import sys
+	client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+	client.connect(sys.argv[1])
+	print(client.recv(128).decode())
+	client.close()
+	EOH
+  else
+    echo "No way to read socket. Type the passwords your own self" >&2
+    return 1
+  fi
+}
+
+use-op-cli() {
+  local secret_ref=${OP_SUDO_SECRET_REF}
+  op read "${secret_ref}"
+}
+
+main() {
+  if [ ! -z "${SSH_TTY}" -a -S "${SOCKET}" -a -r "${SOCKET}" ]; then
+    use-socket "${@}"
+  elif has-command op; then
+    use-op-cli "${@}"
+  else
+    echo "Type the passwords your own self" >&2
+    return 1
+  fi
+}
+
+main "$@"
+
+# vim:ts=6

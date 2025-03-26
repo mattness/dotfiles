@@ -1,0 +1,6 @@
+config.symlink -> .ssh/config
+fragment-agent-forwarding.symlink -> .ssh/config.d/fragments/agent-forwarding
+fragment-sudo-forwarding.symlink -> .ssh/config.d/fragments/sudo-forwarding
+fragment-sudo-unlink.symlink -> .ssh/config.d/fragments/sudo-unlink
+fragment-tmux-auto-attach.symlink -> .ssh/config.d/fragments/tmux-auto-attach
+host-github.symlink -> .ssh/config.d/github

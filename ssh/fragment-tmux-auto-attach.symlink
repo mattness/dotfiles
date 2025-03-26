@@ -1,0 +1,4 @@
+RequestTTY yes
+RemoteCommand tmux new -A
+
+# vi:ft=sshconfig

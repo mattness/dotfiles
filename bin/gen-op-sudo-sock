@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+remotehost=${1}
+socketpath=${2:-${HOME}/.1password/${remotehost}.sock}
+remotehost_rev=$(tr '.' $'\n' <<<"${remotehost}" | tail -r | paste -s -d '.' /dev/stdin)
+dest="${HOME}/Library/LaunchAgents/${remotehost_rev}.op-sudo.plist"
+op_bin=$(command -v op)
+
+# TODO: Lookup secret ref based on remotehost
+secretref=$(grep "^${remotehost}" "${HOME}/.1password/.hostmap" | cut -d ' ' -f2)
+read -d $'\000' template <<EOH
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Disabled</key>
+    <false/>
+    <key>Label</key>
+    <string>${remotehost_rev}.op-sudo</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>${op_bin}</string>
+        <string>read</string>
+        <string>${secretref}</string>
+    </array>
+    <key>inetdCompatibility</key>
+    <dict>
+        <key>Wait</key>
+        <false/>
+    </dict>
+    <key>InitGroups</key>
+    <true/>
+    <key>Sockets</key>
+    <dict>
+        <key>Listeners</key>
+        <dict>
+            <key>SockPathMode</key>
+            <integer>384</integer>
+            <key>SockPathName</key>
+            <string>${socketpath}</string>
+            <key>SockType</key>
+            <string>stream</string>
+        </dict>
+    </dict>
+</dict>
+</plist>
+EOH
+
+# If the file exists ...
+if [ -r "${dest}" ]; then
+  # and it's identical
+  if cmp "${dest}" - &>/dev/null <<<"${template}"; then
+    # make sure it's running
+    if ! launchctl list | grep "${remotehost_rev}.op-sudo" &>/dev/null; then
+      launchctl load "${dest}"
+    fi
+    # and bail out
+    exit 0
+  else # it exists, but is different
+    # make sure it's not running before we update it
+    launchctl unload "${dest}" &>/dev/null
+    rm -f "${socketpath}"
+  fi
+fi
+
+# Write the template out
+cat > "${dest}" <<<"${template}"
+# Start listening
+launchctl load "${dest}"

@@ -1,0 +1,7 @@
+PermitLocalCommand yes
+LocalCommand gen-op-sudo-sock %h
+RemoteForward /home/%r/.ssh/op-sudo.sock %d/.1password/%h.sock
+# NOTE: Set StreamLocalBindUnlink=yes on the server side if possible.
+# Otherwise, use fragments/sudo-unlink with an unlink host
+
+# vi:ft=sshconfig

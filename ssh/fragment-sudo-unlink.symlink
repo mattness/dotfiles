@@ -1,0 +1,3 @@
+RemoteCommand rm -f ~/.ssh/op-sudo.sock
+
+# vi:ft=sshconfig

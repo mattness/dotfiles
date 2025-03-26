@@ -1,0 +1,6 @@
+Host * exec "test -z ${SSH_TTY}"
+  IdentityAgent ~/.1password/ssh-agent.sock
+
+Include config.d/*
+
+# vi:ft=sshconfig

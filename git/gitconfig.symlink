@@ -1,10 +1,18 @@
 [include]
   path = ~/.gitconfig.local
 
+[core]
+  excludesfile = ~/.gitignore
+  askpass =
+
 [color]
-  diff = auto
-  status = auto
-  branch = auto
+  ui = auto
+
+[advice]
+  detachedHead = false
+  skippedCherryPicks = false
+  forceDeleteBranch = false
+  diverging = false
 
 [alias]
   st = status -s
@@ -13,15 +21,11 @@
   ci = commit
   br = branch
   last = log -1 HEAD
-  graph = log --graph --oneline
+  graph = log --graph --oneline --no-show-signature
   conflicts = diff --name-only --diff-filter=U
-  fplog = log --oneline --first-parent
+  fplog = log --oneline --first-parent --no-show-signature
   empty = commit --allow-empty -m 'Empty commit'
   amend = commit --amend --no-edit
-
-[core]
-  excludesfile = ~/.gitignore
-  askpass = 
 
 [fetch]
   prune = true
@@ -30,12 +34,6 @@
 [push]
   default = matching
   followTags = true
-
-[advice]
-  detachedHead = false
-  skippedCherryPicks = false
-  forceDeleteBranch = false
-  diverging = false
 
 [pull]
   rebase = true
@@ -57,3 +55,5 @@
 
 [log]
   showSignature = true
+
+# vi:ft=gitconfig

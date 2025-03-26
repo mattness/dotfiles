@@ -69,8 +69,10 @@ install() {
     # If a file or symlink already exists at the destination,
     if [ -e "$dest" ]
     then
-      # unless we've already be told to skip all duplicates,
-      $skip_all && continue
+      # unless we've already be told to skip all duplicates or the link is already set,
+      if ${skip_all} || [ "$(realpath "${dest}")" = "$(realpath "${link}")" ]; then
+        continue
+      fi
 
       # Prompt for an action: overwrite (all), backup (all), skip (all)
       if ! $overwrite_all && ! $backup_all;
@@ -101,18 +103,15 @@ install() {
         esac
       fi
 
-      # If overwrite, remove the existing file/symlink
-      ($overwrite || $overwrite_all) && rm -f $dest
-
       # If backup, rename the existing file/symlink with a .backup suffix
       ($backup || $backup_all) && mv "$dest" "${dest}.backup"
     fi
 
-    # Create the directory where symlink will be placed if it doesn't exist
-    [[ -e $(dirname "$dest") ]] || mkdir -p "$(dirname "$dest")"
+    # Ensure the directory where symlink will be placed exists
+    mkdir -p "$(dirname "$dest")"
 
     # Link the file to the destination
-    ln -s "$link" "$dest"
+    ln -snf "$link" "$dest"
   done
 }
 
@@ -121,7 +120,7 @@ uninstall() {
     dest=$(resolve_link_dest "$link")
 
     # If a symlink already exists at the target path, remove it
-    [[ -h "$dest" ]] && rm -f "$dest"
+    test "$(realpath "${dest}")" = "$(realpath "${link}")" && rm -rf "${dest}"
 
     # If a backup exists for the target path, restore it
     [[ -e "${dest}.backup" ]] && mv "${dest}.backup" "$dest"

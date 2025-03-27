@@ -4,7 +4,7 @@ fugitive.symlink -> .vim/bundle/vim-fugitive
 scala.symlink -> .vim/bundle/vim-scala
 node.symlink -> .vim/bundle/vim-node
 javascript-syntax.symlink -> .vim/bundle/vim-javascript-syntax
-terrafom.symlink -> .vim/bundle/vim-terrafom
+terraform.symlink -> .vim/bundle/vim-terrafom
 commentary.symlink -> .vim/bundle/vim-commentary
 editorconfig.symlink -> .vim/bundle/editorconfig-vim
 puppet-syntax-vim.symlink -> .vim/bundle/vim-puppet

@@ -10,7 +10,6 @@ alias diff='diff -u'
 alias cdiff='colordiff -u'
 alias patch='patch -u'
 alias tree='tree -I bin -I obj'
-alias vim='nvim'
 
 pidlist() {
   ps -eo pid,cmd | grep "$1" | grep -v grep | awk '{ print $1 }' | tr '\n' ',' | sed 's/.$//'

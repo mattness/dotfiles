@@ -20,6 +20,9 @@ if [ -r /etc/os-release ]; then
     'ubuntu' )
       sudo "${sudo_opts[@]}" true &>/dev/null
       xargs sudo "${sudo_opts[@]}" apt-get install -y < "${script_dir}/packages/${ID}.txt"
+      mkdir -p "${HOME}/.local/bin"
+      command -v batcat &>/dev/null && ln -snf "$(which batcat)" "${HOME}/.local/bin/bat"
+      command -v fdfind &>/dev/null && ln -snf "$(which fdfind)" "${HOME}/.local/bin/fd"
       ;;
 
     * )

@@ -14,7 +14,7 @@ if [ -r /etc/os-release ]; then
   case "${ID}" in
     'fedora' )
       sudo "${sudo_opts[@]}" true &>/dev/null
-      xargs sudo "${sudo_opts[@]}" dnf install -y < "${script_dir}/packages/${ID}-${VARIANT_ID}.txt"
+      xargs sudo "${sudo_opts[@]}" dnf install -y < "${script_dir}/packages/${ID}-${VARIANT_ID/cloud/server}.txt"
       ;;
 
     'ubuntu' )

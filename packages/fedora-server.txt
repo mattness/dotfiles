@@ -1,9 +1,11 @@
 bat
+clang
 fd-find
 fzf
 git
 git-lfs
 jq
+neovim
 ripgrep
 tmux
-vim-enhanced
+unzip

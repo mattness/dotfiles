@@ -1,0 +1,2 @@
+config.symlink -> .ssh/config
+host-github.symlink -> .ssh/config.d/github

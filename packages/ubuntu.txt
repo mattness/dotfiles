@@ -1,4 +1,5 @@
 bat
+clang
 fd-find
 fzf
 git
@@ -6,4 +7,5 @@ git-lfs
 jq
 ripgrep
 tmux
+unzip
 vim

@@ -1,4 +1,4 @@
 RequestTTY yes
-RemoteCommand tmux new -A
+RemoteCommand bash -l -c 'tmux new -A'
 
 # vi:ft=sshconfig

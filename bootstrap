@@ -35,5 +35,6 @@ fi
 "${script_dir}/distro/set-defaults.sh"
 
 # Install software
+"${script_dir}/fzf/install.sh" 2>&1
 "${script_dir}/neovim/install.sh" 2>&1
 "${script_dir}/install" <<<'B'

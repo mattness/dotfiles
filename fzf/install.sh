@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if ! command -v fzf &>/dev/null; then
+if ! command -v fzf &>/dev/null || [ '--force' == "$1" ]; then
   arch="$(uname -m)"
   case "${arch}" in
     'aarch64' )

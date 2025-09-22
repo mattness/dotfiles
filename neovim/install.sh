@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Make sure neovim is installed. We'll use the latest appimage for distros whose package managers are out-of-date
-if ! command -v nvim &>/dev/null; then
+if ! command -v nvim &>/dev/null || [ '--force' == "${1}" ]; then
   arch="$(uname -m)"
   case "${arch}" in
     'aarch64' )

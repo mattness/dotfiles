@@ -1,0 +1,10 @@
+[Unit]
+Description=Resilient SSH Agent Proxy Socket
+
+[Socket]
+ListenStream=%h/.ssh/agent-switcher.sock
+SocketMode=0600
+Accept=no
+
+[Install]
+WantedBy=default.target

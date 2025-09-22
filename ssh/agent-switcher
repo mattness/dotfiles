@@ -1,0 +1,437 @@
+#!/usr/bin/env python3
+
+import asyncio
+import glob
+import logging
+import os
+import pathlib
+import signal
+import socket
+import stat
+import sys
+
+
+class AgentSwitcherProxy:
+    def __init__(self):
+        self.server = None
+        self.active_connections = []
+        self.ssh_agent_socket = None
+        self.cleanup_socket_path = None
+
+        logging.basicConfig(
+            level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+        )
+        self.logger = logging.getLogger(__name__)
+
+    def find_agent_socket(self):
+        # Check environment variable first
+        # if "SSH_AUTH_SOCK" in os.environ:
+        #     ssh_sock = pathlib.Path(os.environ["SSH_AUTH_SOCK"])
+        #     if ssh_sock.exists() and self.is_socket_accessible(ssh_sock):
+        #         self.logger.info(f"Using SSH_AUTH_SOCK: {ssh_sock}")
+        #         return str(ssh_sock)
+
+        # Search for SSH agent sockets in /tmp
+        ssh_patterns = [
+            "/tmp/ssh-*/agent.*",
+            "/tmp/ssh-*",
+            "/run/user/*/ssh-*",
+            "/run/user/*/keyring/ssh",
+        ]
+
+        candidates = []
+        for pattern in ssh_patterns:
+            candidates.extend(glob.glob(pattern))
+
+        # Filter for accessible sockets owned by current user
+        uid = os.getuid()
+        valid_sockets = []
+
+        for candidate in candidates:
+            candidate_path = pathlib.Path(candidate)
+            if self.is_socket_accessible(candidate_path, uid):
+                # Test if we can actually connect
+                if self.test_socket_connection(candidate_path):
+                    valid_sockets.append(candidate_path)
+
+        if not valid_sockets:
+            raise FileNotFoundError(
+                "No accessible SSH agent socket found. "
+                "Ensure SSH agent forwarding is enabled (ssh -A) or start ssh-agent."
+            )
+
+        # Sort by modification time (newest first) and return the first one
+        valid_sockets.sort(key=lambda x: x.stat().st_mtime, reverse=True)
+        chosen_socket = valid_sockets[0]
+
+        self.logger.info(f"Found SSH agent socket: {chosen_socket}")
+        if len(valid_sockets) > 1:
+            self.logger.info(
+                f"Note: {len(valid_sockets)} SSH agent sockets found, using newest"
+            )
+
+        return str(chosen_socket)
+
+    def is_socket_accessible(self, socket_path, expected_uid=None):
+        try:
+            if not socket_path.exists():
+                return False
+
+            stat_info = socket_path.stat()
+
+            # Check if it's a socket
+            if not stat.S_ISSOCK(stat_info.st_mode):
+                return False
+
+            # Check ownership if specified
+            if expected_uid is not None and stat_info.st_uid != expected_uid:
+                return False
+
+            # Check if we can access it
+            return os.access(socket_path, os.R_OK | os.W_OK)
+
+        except (OSError, PermissionError):
+            return False
+
+    def test_socket_connection(self, socket_path):
+        import socket as sock
+
+        try:
+            test_sock = sock.socket(sock.AF_UNIX, sock.SOCK_STREAM)
+            test_sock.settimeout(1.0)  # 1 second timeout
+            test_sock.connect(str(socket_path))
+            test_sock.close()
+            return True
+        except (sock.error, OSError, ConnectionRefusedError):
+            return False
+
+    async def handle_connection(self, reader, writer):
+        """Handle a client connection by proxying data to SSH agent socket"""
+        client_addr = f"client_{id(writer)}"
+        self.logger.info(f"New connection from {client_addr}")
+
+        connection_tasks = set()
+        target_writer = None
+        target_reader = None
+
+        try:
+            # Retry logic for SSH agent connection
+            max_retries = 3
+            retry_delay = 0.5  # Start with 500ms delay
+
+            for attempt in range(max_retries):
+                try:
+                    # Find/refresh SSH agent socket if needed
+                    if not self.ssh_agent_socket or attempt > 0:
+                        self.logger.info(
+                            f"Attempting to find SSH agent socket (attempt {attempt + 1})"
+                        )
+                        self.ssh_agent_socket = self.find_agent_socket()
+
+                    # Connect to SSH agent socket
+                    target_reader, target_writer = await asyncio.open_unix_connection(
+                        self.ssh_agent_socket
+                    )
+                    self.logger.info(f"Connected to SSH agent socket for {client_addr}")
+                    break  # Success - exit retry loop
+
+                except ConnectionRefusedError as e:
+                    self.logger.warning(
+                        f"Connection refused to SSH agent (attempt {attempt + 1}): {e}"
+                    )
+
+                    if attempt < max_retries - 1:
+                        # Clear cached socket path to force rediscovery
+                        self.ssh_agent_socket = None
+                        self.logger.info(f"Retrying in {retry_delay}s...")
+                        await asyncio.sleep(retry_delay)
+                        retry_delay *= 2  # Exponential backoff: 0.5s, 1s, 2s
+                    else:
+                        # Final attempt failed
+                        self.logger.error(
+                            f"Failed to connect to SSH agent after {max_retries} attempts"
+                        )
+                        # Send error response to client and close connection
+                        try:
+                            writer.write(b"SSH Agent connection failed\n")
+                            await writer.drain()
+                        except Exception:
+                            pass
+                        return
+
+                except FileNotFoundError as e:
+                    self.logger.error(
+                        f"No SSH agent socket found (attempt {attempt + 1}): {e}"
+                    )
+
+                    if attempt < max_retries - 1:
+                        self.logger.info(f"Retrying in {retry_delay}s...")
+                        await asyncio.sleep(retry_delay)
+                        retry_delay *= 2
+                    else:
+                        self.logger.error(
+                            f"No SSH agent found after {max_retries} attempts"
+                        )
+                        try:
+                            writer.write(b"No SSH Agent found\n")
+                            await writer.drain()
+                        except Exception:
+                            pass
+                        return
+
+            # Create bidirectional proxy tasks
+            client_to_target = asyncio.create_task(
+                self._proxy_data(reader, target_writer, f"{client_addr}->ssh-agent")
+            )
+            target_to_client = asyncio.create_task(
+                self._proxy_data(target_reader, writer, f"ssh-agent->{client_addr}")
+            )
+
+            connection_tasks.add(client_to_target)
+            connection_tasks.add(target_to_client)
+            self.active_connections.append(connection_tasks)
+
+            # Wait for either direction to complete/fail
+            done, pending = await asyncio.wait(
+                connection_tasks, return_when=asyncio.FIRST_COMPLETED
+            )
+
+            # Cancel remaining tasks
+            for task in pending:
+                task.cancel()
+                try:
+                    await task
+                except asyncio.CancelledError:
+                    pass
+
+        except Exception as e:
+            self.logger.error(f"Unexpected error handling {client_addr}: {e}")
+        finally:
+            # Clean up connections
+            if connection_tasks and connection_tasks in self.active_connections:
+                self.active_connections.remove(connection_tasks)
+
+            # Close connections
+            try:
+                writer.close()
+                await writer.wait_closed()
+            except Exception:
+                pass
+
+            if target_writer:
+                try:
+                    target_writer.close()
+                    await target_writer.wait_closed()
+                except Exception:
+                    pass
+
+            self.logger.info(f"Connection {client_addr} closed")
+
+    async def _proxy_data(self, reader, writer, direction):
+        try:
+            while True:
+                # Read data in chunks for better performance
+                data = await reader.read(8192)
+                if not data:
+                    self.logger.debug(f"EOF received on {direction}")
+                    break
+
+                writer.write(data)
+                await writer.drain()
+
+        except asyncio.CancelledError:
+            raise
+        except Exception as e:
+            self.logger.error(f"Error proxying data ({direction}): {e}")
+
+    async def start(self, listen_socket_path=None, max_connections=10):
+        # Find SSH agent socket first
+        try:
+            self.ssh_agent_socket = self.find_agent_socket()
+        except FileNotFoundError as e:
+            self.logger.error(str(e))
+            raise
+
+        # Check if we should use systemd socket activation
+        if not listen_socket_path:
+            self.logger.info("Using listening socket on fd3")
+
+            # Debug systemd environment
+            self.logger.info(f"LISTEN_PID={os.environ.get('LISTEN_PID')}")
+            self.logger.info(f"LISTEN_FDS={os.environ.get('LISTEN_FDS')}")
+            self.logger.info(f"Current PID={os.getpid()}")
+
+            # systemd passes sockets starting from fd 3
+            # LISTEN_FDS tells us how many sockets were passed
+            listen_fds = int(os.environ.get("LISTEN_FDS", "0"))
+
+            if listen_fds > 0:
+                # Method 2: Socket passed via LISTEN_FDS
+                socket_fd = 3  # First socket at fd 3
+                self.logger.info(f"Using LISTEN_FDS method, socket at fd {socket_fd}")
+            else:
+                # Method 1: Socket on stdin (StandardInput=socket)
+                socket_fd = 0  # stdin
+                self.logger.info(f"Using StandardInput=socket method, socket at fd {socket_fd}")
+
+            try:
+                # Check what type of file descriptor this is
+                fd_stat = os.fstat(socket_fd)
+                self.logger.info(
+                    f"FD {socket_fd} mode: {stat.filemode(fd_stat.st_mode)}"
+                )
+
+                if not stat.S_ISSOCK(fd_stat.st_mode):
+                    raise RuntimeError(f"FD {socket_fd} is not a socket")
+
+                # Create socket from file descriptor
+                sock = socket.fromfd(socket_fd, socket.AF_UNIX, socket.SOCK_STREAM)
+                # Set socket to non-blocking for asyncio
+                sock.setblocking(False)
+
+                self.logger.info(
+                    f"Successfully created socket from systemd fd {socket_fd}"
+                )
+
+                # Create server with existing socket
+                self.server = await asyncio.start_unix_server(
+                    self.handle_connection, sock=sock, limit=max_connections
+                )
+
+            except OSError as e:
+                raise RuntimeError(f"Failed to use systemd socket fd {socket_fd}: {e}")
+        else:
+            # Standard mode - create our own socket
+            self.cleanup_socket_path = listen_socket_path = pathlib.Path(
+                listen_socket_path
+            )
+            # Remove existing socket file if it exists
+            if listen_socket_path.exists():
+                self.logger.info(f"Removing existing socket file {listen_socket_path}")
+                listen_socket_path.unlink()
+
+            # Set umask to create socket with mode 600
+            old_umask = os.umask(0o077)  # umask 077 = mode 600
+
+            try:
+                # Create the server
+                self.server = await asyncio.start_unix_server(
+                    self.handle_connection,
+                    str(listen_socket_path),
+                    limit=max_connections,
+                )
+            finally:
+                # Restore original umask
+                os.umask(old_umask)
+
+        self.logger.info(f"Proxy server listening on {listen_socket_path or 'fd3'}")
+        self.logger.info(f"Proxying to SSH agent socket: {self.ssh_agent_socket}")
+        self.logger.info(f"Max concurrent connections: {max_connections}")
+
+        # Serve forever
+        async with self.server:
+            await self.server.serve_forever()
+
+    async def stop(self):
+        self.logger.info("Shutting down proxy server...")
+
+        if self.server:
+            self.server.close()
+            await self.server.wait_closed()
+
+        # Cancel all active connections
+        for connection_tasks in list(self.active_connections):
+            for task in connection_tasks:
+                task.cancel()
+
+        # Wait for all connections to close
+        all_tasks = [task for tasks in self.active_connections for task in tasks]
+        if all_tasks:
+            await asyncio.gather(*all_tasks, return_exceptions=True)
+
+        # Clean up socket file
+        if self.cleanup_socket_path and self.cleanup_socket_path.exists():
+            self.cleanup_socket_path.unlink()
+            self.logger.info(f"Removed socket file {self.cleanup_socket_path}")
+
+        self.logger.info("Proxy server stopped")
+
+
+async def main():
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Unix Socket SSH Agent Proxy - automatically finds and proxies to active SSH agent",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python3 agent-switcher
+  python3 agent-switcher /tmp/my-agent.sock  
+  python3 agent-switcher --systemd
+
+Notes:
+  - Automatically discovers SSH agent sockets in /tmp/ssh-* and other locations
+  - Uses SSH_AUTH_SOCK environment variable if available
+  - Default listen socket: ~/.ssh/agent-switcher.sock
+        """,
+    )
+
+    parser.add_argument(
+        "listen_socket_path",
+        nargs="?",
+        help="Path for the proxy listen socket (default: ~/.ssh/agent-switcher.sock)",
+    )
+    parser.add_argument(
+        "--systemd",
+        action="store_true",
+        help="Use systemd socket activation (mutually exclusive with custom listen_socket_path)",
+    )
+
+    args = parser.parse_args()
+
+    # Check for systemd socket activation environment
+    use_systemd = (
+        os.environ.get('LISTEN_PID') == str(os.getpid()) or  # LISTEN_FDS method
+        (args.systemd) or  # Explicit --systemd flag
+        (os.environ.get('INVOCATION_ID') is not None)  # systemd sets this for all services
+    )
+
+    # Validate arguments
+    if args.listen_socket_path and use_systemd:
+        parser.error(
+            "listen_socket_path cannot be specified with --systemd or when systemd socket activation is detected"
+        )
+
+    # Determine listen socket path
+    listen_socket = None
+    if not use_systemd:
+        listen_socket = args.listen_socket_path or str(
+            pathlib.Path.home() / ".ssh/agent-switcher.sock"
+        )
+
+    # Create proxy instance
+    proxy = AgentSwitcherProxy()
+
+    def signal_handler():
+        asyncio.create_task(proxy.stop())
+
+    for sig in (signal.SIGTERM, signal.SIGINT):
+        asyncio.get_event_loop().add_signal_handler(sig, signal_handler)
+
+    try:
+        await proxy.start(listen_socket)
+    except KeyboardInterrupt:
+        pass
+    except Exception as e:
+        logging.error(f"Server error: {e}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("\nShutdown requested by user")
+    except Exception as e:
+        print(f"Fatal error: {e}")
+        sys.exit(1)

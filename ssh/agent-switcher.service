@@ -1,0 +1,15 @@
+[Unit]
+Description=Resilient SSH Agent Proxy Service
+Requires=agent-switcher.socket
+After=agent-switcher.socket
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/env python3 %h/.dotfiles/ssh/agent-switcher
+StandardInput=socket
+StandardOutput=journal
+StandardError=journal
+Restart=no
+
+[Install]
+WantedBy=default.target

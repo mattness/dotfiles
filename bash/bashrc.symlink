@@ -14,6 +14,20 @@ physical_dir() {
   echo $dir
 }
 
+function _dir_is_in_path() {
+  local dir path_element expanded_element
+  dir=$(eval echo "$1")
+
+  local IFS=':'
+  for path_element in $PATH; do
+    expanded_element=$(eval echo "$path_element")
+    if [[ "$expanded_element" == "$dir" ]]; then
+      return 0  # Found in PATH
+    fi
+  done
+  return 1  # Not found in PATH
+}
+
 dotfilesdir=$(cd -P "$(physical_dir "${BASH_SOURCE[0]}")/../" && pwd)
 mapfile -t configfiles     < <(find "${dotfilesdir}" -type f -name "*.bash" -not -name 'completion.bash' -and -not -name 'path.bash')
 mapfile -t pathfiles       < <(find "${dotfilesdir}" -type f -name 'path.bash')

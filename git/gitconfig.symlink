@@ -40,8 +40,9 @@
 
 [merge]
   ff = only
+  tool = nvimdiff
 
-[mergetool "vimdiff"]
+[mergetool "nvimdiff"]
   layout = "LOCAL,BASE,REMOTE / MERGED + BASE,LOCAL + BASE,REMOTE + (LOCAL/BASE/REMOTE),MERGED"
 
 [gpg]

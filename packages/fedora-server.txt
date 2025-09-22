@@ -5,7 +5,6 @@ fzf
 git
 git-lfs
 jq
-neovim
 ripgrep
 tmux
 unzip

@@ -21,6 +21,7 @@ brew "xz"
 cask "1password", args: { "no-quarantine": true }
 cask "1password-cli", args: { "no-quarantine": true }
 cask "alacritty", args: { "no-quarantine": true }
+cask "alfred", args: { "no-quarantine": true }
 cask "brave-browser", args: { "no-quarantine": true }
 cask "font-jetbrains-mono-nerd-font", args: { "no-quarantine": true }
 cask "temurin@17", args: { "no-quarantine": true }

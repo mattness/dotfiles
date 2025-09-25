@@ -16,6 +16,9 @@ program = "/opt/homebrew/bin/bash"
 columns = 128
 lines = 32
 
+[window]
+option_as_alt = "OnlyLeft"
+
 [general]
 import = [
   "~/.config/alacritty/tokyonight_night.toml",

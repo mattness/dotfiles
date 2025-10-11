@@ -10,6 +10,7 @@ set -g default-shell /opt/homebrew/bin/bash
 set -g base-index 1
 set -g mouse off
 set -g history-limit 10000
+set -g focus-events on
 
 # Reset prefix to Ctrl+Space
 set -g prefix C-Space

@@ -7,6 +7,7 @@ set -as terminal-overrides ',*:Setulc=\E[58::2::::%p1%{65536}%/%d::%p1%{256}%/%{
 set -g base-index 1
 set -g mouse off
 set -g history-limit 10000
+set -g focus-events on
 
 # Reset prefix to Ctrl+Space
 set -g prefix C-Space

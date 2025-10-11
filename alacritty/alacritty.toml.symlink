@@ -9,7 +9,7 @@ italic.style = "Italic"
 save_to_clipboard = true
 
 [terminal.shell]
-args = ["--login", "-c", "/opt/homebrew/bin/tmux new -A"]
+args = ["--login", "-ic", "exec tmux new -A"]
 program = "/opt/homebrew/bin/bash"
 
 [window.dimensions]

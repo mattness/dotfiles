@@ -41,9 +41,7 @@ set-window-option -g pane-base-index 1
 bind | split-window -h
 bind - split-window -v
 
-# Quick Window selection
-bind -r C-h select-window -t :-
-bind -r C-l select-window -t :+
+bind -n S-Enter send-keys Escape "[13;2u"
 
 # Activate OFF mode to allow for sharing prefix between nested tmux sessions
 bind -n F4 \

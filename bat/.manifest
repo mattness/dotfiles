@@ -1,1 +1,2 @@
 config.symlink -> .config/bat/config
+inksea.tmTheme.symlink -> .config/bat/themes/inksea.tmTheme

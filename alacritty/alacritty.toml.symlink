@@ -19,10 +19,39 @@ lines = 32
 [window]
 option_as_alt = "OnlyLeft"
 
+[colors.primary]
+background = '#1a1d21'
+foreground = '#c4cad1'
+
+[colors.normal]
+black = '#131518'
+red = '#ef5285'
+green = '#63e6be'
+yellow = '#F6B352'
+blue = '#6FC1FF'
+magenta = '#FF9AC1'
+cyan = '#45A9F9'
+white = '#c4cad1'
+
+[colors.bright]
+black = '#676B79'
+red = '#ef5285'
+green = '#63e6be'
+yellow = '#FFCC95'
+blue = '#6FC1FF'
+magenta = '#FF9AC1'
+cyan = '#45A9F9'
+white = '#c4cad1'
+
+[[colors.indexed_colors]]
+index = 16
+color = '#FFCC95'
+
+[[colors.indexed_colors]]
+index = 17
+color = '#db4b4b'
+
 [general]
-import = [
-  "~/.config/alacritty/tokyonight_night.toml",
-  "~/.alacritty.local.toml"
-]
+import = ["~/.alacritty.local.toml"]
 
 # vi:ft=toml

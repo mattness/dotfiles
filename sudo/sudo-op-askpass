@@ -6,10 +6,15 @@ has-command() {
 }
 
 use-socket() {
+  local script_dir="$(dirname "$(realpath "$0")")"
+  local bin="${script_dir}/sudo-op-client"
+
   if has-command nc; then
     nc -U "${SOCKET}" < /dev/null
   elif has-command socat; then
     socat stdio "UNIX-CONNECT:${SOCKET}"
+  elif [ -x "${bin}" ]; then
+    "${bin}" "${SOCKET}"
   elif has-command python; then
     python - "${SOCKET}" <<-'EOH'
 	import socket
@@ -19,6 +24,59 @@ use-socket() {
 	print(client.recv(128).decode())
 	client.close()
 	EOH
+  elif has-command gcc; then
+    gcc -x c -o "${bin}" - 2>/dev/null <<-'EOC'
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+	#include <unistd.h>
+	#include <sys/socket.h>
+	#include <sys/un.h>
+	
+	int main(int argc, char *argv[]) {
+	    if (argc != 2) {
+	        fprintf(stderr, "Usage: %s <socket_path>\n", argv[0]);
+	        return 1;
+	    }
+	
+	    int client_fd = socket(AF_UNIX, SOCK_STREAM, 0);
+	    if (client_fd == -1) {
+	        perror("socket");
+	        return 1;
+	    }
+	
+	    struct sockaddr_un addr;
+	    memset(&addr, 0, sizeof(addr));
+	    addr.sun_family = AF_UNIX;
+	    strncpy(addr.sun_path, argv[1], sizeof(addr.sun_path) - 1);
+	
+	    if (connect(client_fd, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
+	        perror("connect");
+	        close(client_fd);
+	        return 1;
+	    }
+	
+	    char buffer[128];
+	    ssize_t bytes_received = recv(client_fd, buffer, sizeof(buffer) - 1, 0);
+	    if (bytes_received == -1) {
+	        perror("recv");
+	        close(client_fd);
+	        return 1;
+	    }
+	
+	    buffer[bytes_received] = '\0';
+	    printf("%s", buffer);
+	
+	    close(client_fd);
+	    return 0;
+	}
+	EOC
+    if [ $? -eq 0 ] && [ -x "${bin}" ]; then
+      "${bin}" "${SOCKET}"
+      return $?
+    else
+      return 1
+    fi
   else
     echo "No way to read socket. Type the passwords your own self" >&2
     return 1
